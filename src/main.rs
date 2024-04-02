@@ -1,45 +1,23 @@
-use std::{fmt::format, string, sync::Arc};
+use std::{ sync::Arc};
 
 use axum::{
     extract::{Path, Query},
     routing::{delete, get, post},
     Extension, Json, Router,
 };
-use serde::{Deserialize, Serialize};
+
 use surrealdb::{
     engine::remote::ws::{Client, Wss},
     opt::auth::Root,
-    sql::{  Thing},
+    
     Surreal,
 };
 use tokio::net::TcpListener;
 
-#[derive(Debug, Serialize, Deserialize)]
-struct Upazila {
-    name: String,
-    population: usize,
-    villages: Vec<String>,
-    tourist_place: bool,
-}
+use crate::models::{record_model::Record, upazila_model::{Upazila,UpazilaId,Update_Population,}};
 
-#[derive(Debug, Deserialize)]
-struct Record {
-    id: Thing,
-    name: String,
-    population: usize,
-    villages: Vec<String>,
-    tourist_place: bool,
-}
+mod models;
 
-#[derive(Debug, Serialize, Deserialize)]
-struct Update_Population {
-    population: usize,
-}
-
-#[derive(Debug,Deserialize)]
-struct UpazilaId{
-    id: String
-}
 
 type DB = Extension<Arc<Surreal<Client>>>;
 
@@ -162,6 +140,11 @@ async fn show_path(db_instance: DB, Path(table_name):Path<String>,Query(upazila_
 
 #[tokio::main]
 async fn main() -> surrealdb::Result<()> {
+
+    // initilizing Tracing 
+    
+
+
     let one_db_instance = Arc::new(create_new_db().await);
     // create a db instance that can pass to any single threaded asyncronous function
 
