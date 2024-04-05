@@ -23,9 +23,9 @@ async fn main() -> surrealdb::Result<()> {
 
     tracing_subscriber::fmt()
     .with_target(false) // target source method won't include in the log message
-    .compact()// get a structured minimalist log message
+    // .compact()// get a structured minimalist log message
     // .pretty()
-    // .json()// can output json format
+    .json()// can output json format
     // .with_writer(info_file)// save all the trace in the log file
     // .with_max_level(tracing::Level::TRACE) // set's all the details of tracing
     // .with_ansi(false)
